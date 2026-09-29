@@ -1,0 +1,65 @@
+name: TimelineWidget
+options:
+  bundleIdPrefix: com.abdraiymbek
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    GENERATE_INFOPLIST_FILE: "NO"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    DEVELOPMENT_TEAM: ""
+    ENABLE_HARDENED_RUNTIME: "NO"
+targets:
+  Timeline:
+    type: application
+    platform: macOS
+    scheme: {}
+    sources:
+      - path: Timeline
+        excludes:
+          - "Info.plist"
+          - "Timeline.entitlements"
+      - path: Shared
+        excludes:
+          - "Fonts/**"
+      - path: Shared/Fonts
+        buildPhase: resources
+        type: folder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.abdraiymbek.timelinewidget
+        INFOPLIST_FILE: Timeline/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Timeline/Timeline.entitlements
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/../Frameworks"
+    dependencies:
+      - target: TimelineWidgetExtension
+        embed: true
+  TimelineWidgetExtension:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: TimelineWidgetExtension
+        excludes:
+          - "Info.plist"
+          - "TimelineWidgetExtension.entitlements"
+      - path: Shared
+        excludes:
+          - "Fonts/**"
+      - path: Shared/Fonts
+        buildPhase: resources
+        type: folder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.abdraiymbek.timelinewidget.widget
+        INFOPLIST_FILE: TimelineWidgetExtension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: TimelineWidgetExtension/TimelineWidgetExtension.entitlements
+        SKIP_INSTALL: "YES"
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/../../Frameworks"
+          - "@executable_path/../../../../Frameworks"
